@@ -74,10 +74,10 @@ int main(int argc, char *argv[]){
 
     // GET Request
     //------------------------------------------------------------------------
-    char header[1000]={0};
-    sprintf(header,"GET %s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n",second,str);
-    printf("%s\n",header);
-    send(sock_fd,header,strlen(header),0);
+    char header_get[1000]={0};
+    sprintf(header_get,"GET %s HTTP/1.1\r\nHost: %s\r\nContent-Type: text/plain\r\n\r\n",second,str);
+    printf("%s\n",header_get);
+    send(sock_fd,header_get,strlen(header_get),0);
     int recvl;
     char buffer[1000]={0};
     while(recvl > 0){
@@ -85,6 +85,25 @@ int main(int argc, char *argv[]){
     buffer[recvl]='\0';
     printf("%s",buffer);
     }
-    freeaddrinfo(servinfo);
    // -------------------------------------------------------------------------- 
+
+   // POST Request
+   //---------------------------------------------------------------------------
+   char header_post[1000]={0};
+   char *poststr = "mode=login&user=test&password=test\r\n";
+   sprintf(header_post,
+        "POST %s HTTP/1.1\r\n"
+        "HOST: %s\r\n"
+        "Content-type: application/x-www-form-urlencoded\r\n"
+		"Content-length: %ld\r\n\r\n"
+        "%s",second,str,strlen(poststr),poststr);
+
+    send(sock_fd,header_post,strlen(header_post),0);
+    bzero(buffer,1000);
+    while(recvl > 0){
+    recvl = recv(sock_fd,buffer,sizeof(buffer),0);
+    buffer[recvl]='\0';
+    printf("%s",buffer);
+    }
+    freeaddrinfo(servinfo);
 }
