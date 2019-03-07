@@ -29,5 +29,3 @@ bin/
 # Ignore a file with extension
 relative/path/to/dir/filename.extension
 
-# Ignore a file without extension
-relative/path/to/dir/anotherfile
